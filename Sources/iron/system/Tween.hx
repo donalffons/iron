@@ -12,6 +12,8 @@ class Tween {
 
 	public static function to(anim:TAnim):TAnim {
 		anim._time = 0;
+		anim.isPlaying = (anim.delay != null && anim.delay > 0.0) ? false : true;
+		
 		if (anim.ease == null) anim.ease = Ease.Linear;
 		
 		if (anim.target != null && anim.props != null) {
@@ -46,6 +48,7 @@ class Tween {
 	}
 
 	public static function stop(anim:TAnim) {
+		anim.isPlaying = false;
 		anims.remove(anim);
 	}
 
@@ -64,7 +67,8 @@ class Tween {
 				if (a.delay > 0) continue;
 			}
 
-			a._time += d; // Tween
+			a._time += d;
+			a.isPlaying = a._time < a.duration;
 
 			if (a.target != null) {
 
@@ -114,12 +118,14 @@ class Tween {
 					}
 				}
 			}
-
-			if (a.tick != null) a.tick();
-			
-			if (a._time >= a.duration) { // Complete
+		
+			if (a.isPlaying) {
+				if (a.tick != null) a.tick();
+			}
+			else {
 				anims.splice(i, 1);
 				i--;
+				a.isPlaying = false;
 				if (a.done != null) a.done();
 			}
 		}
@@ -158,6 +164,7 @@ typedef TAnim = {
 	var target:Dynamic;
 	var props:Dynamic;
 	var duration:Float;
+	@:optional var isPlaying:Null<Bool>;
 	@:optional var done:Void->Void;
 	@:optional var tick:Void->Void;
 	@:optional var delay:Null<Float>;
@@ -199,4 +206,3 @@ typedef TAnim = {
 	var BackOut = 23;
 	var BackInOut = 24;
 }
-
