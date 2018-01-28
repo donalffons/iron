@@ -93,12 +93,12 @@ typedef TCameraData = {
 	var near_plane:Float;
 	var far_plane:Float;
 	var fov:Float;
-	var type:String;
 	@:optional var aspect:Null<Float>;
 	@:optional var frustum_culling:Null<Bool>;
 	@:optional var render_to_texture:Null<Bool>;
 	@:optional var texture_resolution_x:Null<Int>;
 	@:optional var texture_resolution_y:Null<Int>;
+	@:optional var ortho_scale:Null<Float>; // Indicates ortho camera
 }
 
 typedef TMaterialData = {
@@ -295,6 +295,7 @@ typedef TParticleData = {
 	var name:String;
 	var type:Int; // 0 - Emitter, Hair
 	var loop:Bool;
+	var render_emitter:Bool;
 	// Emission
 	var count:Int;
 	var frame_start:Float;

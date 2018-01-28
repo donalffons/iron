@@ -34,8 +34,8 @@ class MeshObject extends Object {
 	public function new(data:MeshData, materials:Vector<MaterialData>) {
 		super();
 
-		setData(data);
 		this.materials = materials;	
+		setData(data);
 		Scene.active.meshes.push(this);
 	}
 
@@ -214,6 +214,7 @@ class MeshObject extends Object {
 			}
 			for (i in 0...particleSystems.length) particleSystems[i].update(particleChildren[i], this);
 		}
+		if (particleSystems != null && particleSystems.length > 0 && !particleSystems[0].data.raw.render_emitter) return;
 		if (tilesheet != null) tilesheet.update();
 		if (cullMaterial(context, camera)) return;
 
